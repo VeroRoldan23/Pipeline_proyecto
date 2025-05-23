@@ -13,7 +13,7 @@ steps:
 - task: Maven@3
   displayName: 'Maven app/pom.xml'
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'demo/pom.xml'
     codeCoverageToolOption: Cobertura
 
 
