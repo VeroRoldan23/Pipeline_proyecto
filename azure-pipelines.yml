@@ -15,7 +15,7 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean verify'
-    codeCoverageToolOption: JaCoCo
+    codeCoverageToolOption: Cobertura
     
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
