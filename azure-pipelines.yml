@@ -1,8 +1,3 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
 - main
 
@@ -16,30 +11,33 @@ steps:
     mavenPomFile: 'pom.xml'
     goals: 'clean verify'
     codeCoverageToolOption: JaCoCo
-    
+
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**/*.jar'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**/target/*.jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
     CleanTargetFolder: true
     preserveTimestamp: true
-  condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-  condition: succeededOrFailed()
-  
+
+
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(System.DefaultWorkingDirectory)'
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'AzureForStudentsConnection'
-    appType: 'webApp'
     appName: 'ApiEmpleados'
-    package: '$(System.ArtifactsDirectory)/drop/*.jar'
-
-
+    package: '$(System.DefaultWorkingDirectory)/drop/*.jar'
