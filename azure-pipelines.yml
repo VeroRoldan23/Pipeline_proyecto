@@ -37,7 +37,9 @@ steps:
     downloadPath: '$(System.DefaultWorkingDirectory)'
 
 - task: AzureWebApp@1
+  displayName: 'Deploy Azure Web App'
   inputs:
     azureSubscription: 'AzureForStudentsConnection'
     appName: 'ApiEmpleados'
-    package: '$(System.DefaultWorkingDirectory)/drop/*.jar'
+    package: '$(Build.ArtifactStagingDirectory)/drop/*.jar'
+
