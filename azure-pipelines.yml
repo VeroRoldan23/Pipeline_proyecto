@@ -34,5 +34,12 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
   condition: succeededOrFailed()
+  
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'AzureForStudentsConnection'
+    appType: 'webApp'
+    appName: 'ApiEmpleados'
+    package: '$(System.ArtifactsDirectory)/drop/*.jar'
 
 
