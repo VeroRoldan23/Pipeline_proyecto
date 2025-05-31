@@ -2,44 +2,44 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
+# Paso 1: Compilar y testear con Maven
 - task: Maven@4
-  displayName: 'Maven app/pom.xml'
+  displayName: 'Build con Maven'
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'clean verify'
-    codeCoverageToolOption: JaCoCo
+    goals: 'clean package'
+    codeCoverageToolOption: 'JaCoCo'
 
+# Paso 2: Verificar que se generó el JAR
+- script: |
+    echo "Buscando archivos .jar generados:"
+    find $(Build.SourcesDirectory) -name "*.jar"
+  displayName: 'Verificar .jar generado'
+
+# Paso 3: Copiar JAR al staging para publicación
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  displayName: 'Copiar .jar a carpeta drop'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**/target/*.jar'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
     CleanTargetFolder: true
-    preserveTimestamp: true
 
+# Paso 4: Publicar artefacto para otros stages o despliegue
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+  displayName: 'Publicar artefacto: drop'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-
-- task: DownloadBuildArtifacts@0
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'drop'
-    downloadPath: '$(System.DefaultWorkingDirectory)'
-
+# Paso 5: Desplegar a Azure Web App
 - task: AzureWebApp@1
-  displayName: 'Deploy Azure Web App'
+  displayName: 'Deploy a Azure Web App'
   inputs:
-    azureSubscription: 'AzureForStudentsConnection'
+    azureSubscription: 'AzureForStudentsConnection'  # Asegúrate que el nombre del servicio de conexión es correcto
     appName: 'ApiEmpleados'
     package: '$(Build.ArtifactStagingDirectory)/drop/*.jar'
-
