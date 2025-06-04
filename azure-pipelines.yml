@@ -36,10 +36,3 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-# Paso 5: Desplegar a Azure Web App
-- task: AzureWebApp@1
-  displayName: 'Deploy a Azure Web App'
-  inputs:
-    azureSubscription: 'AzureForStudentsConnection'  # Asegúrate que el nombre del servicio de conexión es correcto
-    appName: 'ApiEmpleados'
-    package: '$(Build.ArtifactStagingDirectory)/drop/*.jar'
