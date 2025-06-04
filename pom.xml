@@ -6,7 +6,7 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
         </plugin>
 
-        <!-- Plugin JaCoCo (opcional, si estás usando cobertura de código) -->
+        
         <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
