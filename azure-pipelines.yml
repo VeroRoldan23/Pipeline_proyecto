@@ -46,11 +46,11 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       Variables
-      $RESOURCE_GROUP = "[NOMBRE_DEL_GRUPO_DE_RECURSOS]"
+      $RESOURCE_GROUP = "NOMBRE_DEL_GRUPO_DE_RECURSOS"
       $LOCATION = "centralus"
-      $SQL_SERVER_NAME = "[NOMBRE_DEL_SERVIDOR_SQL]"
-      $ADMIN_USER = "[USUARIO_ADMIN]"
-      $ADMIN_PASSWORD = "[CONTRASEÑA_SEGURA]"
+      $SQL_SERVER_NAME = "NOMBRE_DEL_SERVIDOR_SQL"
+      $ADMIN_USER = "USUARIO_ADMIN"
+      $ADMIN_PASSWORD = "CONTRASEÑA_SEGURA"
       $DATABASE_NAME = "myDatabase"
 
       Write-Output "Creando el grupo de recursos..."
@@ -69,7 +69,7 @@ steps:
         --resource-group $RESOURCE_GROUP `
         --server $SQL_SERVER_NAME `
         --name AllowMyIP `
-        --start-ip-address 0.0.0.0 `
+        --start-ip-address 192.168.1.88 `
         --end-ip-address 255.255.255.255
 
       Write-Output "Creando la base de datos SQL..."
