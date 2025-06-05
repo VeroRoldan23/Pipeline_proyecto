@@ -2,7 +2,9 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Default
+  demands:
+  - Agent.Name -equals DESKTOP-4G8JHML
 
 steps:
 # Paso 1: Compilar y testear con Maven
